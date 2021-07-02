@@ -13,7 +13,7 @@ export type State = {
 
 const toolsReducer = (): Tool[] => (
   [
-    { title: 'brush', icon: 'pencil' },
+    { title: 'pencil', icon: 'pencil' },
     { title: 'eraser', icon: 'eraser' }
   ]
 )

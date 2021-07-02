@@ -1,4 +1,4 @@
 export type Tool = {
-  title: string
+  title: 'pencil' | 'eraser'
   icon: string
 }
