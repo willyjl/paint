@@ -1,6 +1,4 @@
-type CanvasCallbackArg = [
-  HTMLCanvasElement?,
-  CanvasRenderingContext2D?
+export type UseCanvasReturnType = [
+  LegacyRef<HTMLCanvasElement>,
+  CanvasRenderingContext2D | null | undefined
 ]
-
-type CanvasCallback = (arg: CanvasCallbackArg) => void

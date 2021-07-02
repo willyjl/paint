@@ -5,7 +5,7 @@ import { Canvas } from 'components/canvas'
 export const App = () => (
   <>
     <Canvas />
-    <Top toolName={'Brush'} />
+    <Top />
     <Sidebar />
   </>
 )

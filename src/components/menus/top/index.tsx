@@ -1,7 +1,19 @@
-import { TopProps } from './types'
+import { connect } from 'react-redux'
+import { State } from 'reducers'
+import { Tool } from 'models/tool'
 
-export const Top = ({ toolName }: TopProps) => (
+type TopComponentProps = {
+  tool: Tool
+}
+
+const TopComponent = ({ tool }: TopComponentProps) => (
   <div className="ui top fixed menu">
-    <div className="item">{toolName}</div>
+    {tool && <div className="item">{tool.title}</div>}
   </div>
 )
+
+const mapStateToProps = (state: State) => {
+  return { tool: state.selectedTool }
+}
+
+export const Top = connect(mapStateToProps)(TopComponent)
