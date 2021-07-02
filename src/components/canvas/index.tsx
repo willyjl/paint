@@ -1,20 +1,21 @@
-import { useState } from 'react'
 import { connect } from 'react-redux'
 import { useCanvas } from 'utils'
 import { Tool } from 'models/tool'
 import { Coordinate } from 'models/coordinate'
+import { startPainting, painting, stopPainting } from 'actions'
 import { State } from 'reducers'
 
 type CanvasComponentProps = {
   tool: Tool
+  prevCoord?: Coordinate | null
+  isPainting: boolean,
+  startPainting: Function,
+  painting: Function,
+  stopPainting: Function
 }
 
-const CanvasComponent = ({ tool }: CanvasComponentProps) => {
+const CanvasComponent = ({ tool, prevCoord, isPainting, startPainting, painting, stopPainting }: CanvasComponentProps) => {
   const { screen: { width, height }} = window
-
-  const [isPainting, setIsPainting] = useState<boolean>(false)
-  const [locations, setLocations] = useState<Array<Coordinate>>([])
-
   const [canvasRef, context] = useCanvas()
 
   return (
@@ -22,44 +23,28 @@ const CanvasComponent = ({ tool }: CanvasComponentProps) => {
       ref={canvasRef}
       width={width}
       height={height}
-      onMouseDown={({ nativeEvent: { offsetX, offsetY } }) => {
-        setIsPainting(true)
-        setLocations(
-          [...locations, { x: offsetX, y: offsetY }]
-        )
-      }}
-      onMouseUp={() => setIsPainting(false)}
-      onMouseMove={({ nativeEvent: { offsetX, offsetY } }) => {
-        if (isPainting && context) {
-          context.beginPath()
-
-          switch(tool.title) {
-            case 'pencil':
-              context.lineWidth = 5
-              context.strokeStyle = 'black'
-              break
-            case 'eraser':
-              context.lineWidth = 5
-              context.strokeStyle = 'white'
-              break
-          }
-
-          const location = locations[locations.length-1]
-          context.moveTo(location.x, location.y)
-          context.lineTo(offsetX, offsetY)
-          context.stroke()
-
-          setLocations(
-            [...locations, { x: offsetX, y: offsetY }]
-          )
+      onMouseDown={({ nativeEvent: { offsetX: x, offsetY: y } }) => startPainting({ x, y })}
+      onMouseUp={() => stopPainting()}
+      onMouseMove={({ nativeEvent: { offsetX: x, offsetY: y } }) => {
+        if (isPainting && context && prevCoord) {
+          const currentCoord = { x, y }
+          tool.draw(context, prevCoord, currentCoord)
+          painting(currentCoord)
         }
       }}
     />
   )
 }
 
-const mapStateToProps = (state: State) => {
-  return { tool: state.selectedTool }
-}
+const mapStateToProps = (state: State) => (
+  {
+    tool: state.selectedTool,
+    prevCoord: state.paintingMode.prevCoord,
+    isPainting: state.paintingMode.isActive
+  }
+)
 
-export const Canvas = connect(mapStateToProps)(CanvasComponent)
+export const Canvas = connect(
+  mapStateToProps,
+  { startPainting, painting, stopPainting }
+)(CanvasComponent)

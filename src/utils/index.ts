@@ -1,5 +1,9 @@
-import { useRef, useEffect, useState } from 'react'
-import { UseCanvasReturnType } from './types'
+import { useRef, useEffect, useState, LegacyRef } from 'react'
+
+type UseCanvasReturnType = [
+  LegacyRef<HTMLCanvasElement>,
+  CanvasRenderingContext2D | null | undefined
+]
 
 export const useCanvas = () : UseCanvasReturnType  => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
