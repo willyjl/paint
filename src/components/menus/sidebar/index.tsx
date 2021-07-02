@@ -6,20 +6,30 @@ import './index.scss'
 
 type SidebarComponentProps = {
   tools: Tool[]
+  tool: Tool
   selectTool: Function
 }
 
-const SidebarComponent = ({ tools, selectTool }: SidebarComponentProps) => (
+const SidebarComponent = ({ tools, tool, selectTool }: SidebarComponentProps) => (
   <div id="sidebar" className="ui vertical fixed icon menu">
-    {tools.map(tool => (
+    {tools.map(t => (
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
-      <a key={tool.title} className="item" onClick={() => selectTool(tool)}>
-        <i className={`${tool.icon} icon`} />
+      <a
+        key={t.title}
+        className={`item ${t.title === tool?.title && 'active'}`}
+        onClick={() => selectTool(t)}
+      >
+        <i className={`${t.icon} icon`} />
       </a>
     ))}
   </div>
 )
 
-const mapStateToProps = (state: State) => ({ tools: state.tools })
+const mapStateToProps = (state: State) => (
+  {
+    tools: state.tools,
+    tool: state.selectedTool
+  }
+)
 
 export const Sidebar = connect(mapStateToProps, { selectTool })(SidebarComponent)
