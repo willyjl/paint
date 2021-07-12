@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { State } from 'reducers'
+import { State } from 'reducers/type'
 import { selectTool } from 'actions'
 import { Tool } from 'models/tool'
 import './index.scss'

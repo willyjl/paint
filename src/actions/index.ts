@@ -27,3 +27,17 @@ export const stopPainting = () => (
     type: 'STOP_PAINTING'
   }
 )
+
+export const setWidth = (width: number) => (
+  {
+    type: 'SET_WIDTH',
+    width
+  }
+)
+
+export const setColor = (color: string) => (
+  {
+    type: 'SET_COLOR',
+    color
+  }
+)

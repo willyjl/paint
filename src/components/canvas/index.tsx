@@ -3,7 +3,7 @@ import { useCanvas } from 'utils'
 import { Tool } from 'models/tool'
 import { Coordinate } from 'models/coordinate'
 import { startPainting, painting, stopPainting } from 'actions'
-import { State } from 'reducers'
+import { State } from 'reducers/type'
 
 type CanvasComponentProps = {
   tool: Tool
@@ -26,7 +26,7 @@ const CanvasComponent = ({ tool, prevCoord, isPainting, startPainting, painting,
       onMouseDown={({ nativeEvent: { offsetX: x, offsetY: y } }) => startPainting({ x, y })}
       onMouseUp={() => stopPainting()}
       onMouseMove={({ nativeEvent: { offsetX: x, offsetY: y } }) => {
-        if (isPainting && context && prevCoord) {
+        if (isPainting && tool && context && prevCoord) {
           const currentCoord = { x, y }
           tool.draw(context, prevCoord, currentCoord)
           painting(currentCoord)
