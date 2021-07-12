@@ -6,7 +6,7 @@ import { startPainting, painting, stopPainting } from 'actions'
 import { State } from 'reducers/type'
 
 type CanvasComponentProps = {
-  tool: Tool
+  tool: Tool | undefined
   prevCoord?: Coordinate | null
   isPainting: boolean,
   startPainting: Function,
@@ -38,9 +38,9 @@ const CanvasComponent = ({ tool, prevCoord, isPainting, startPainting, painting,
 
 const mapStateToProps = (state: State) => (
   {
-    tool: state.selectedTool,
-    prevCoord: state.paintingMode.prevCoord,
-    isPainting: state.paintingMode.isActive
+    tool: state.tools.find(t => t.selected),
+    prevCoord: state.painting.prevCoord,
+    isPainting: state.painting.isActive
   }
 )
 

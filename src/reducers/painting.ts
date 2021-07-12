@@ -1,16 +1,16 @@
-import { PaintingMode, ActionType } from './type'
+import { PaintingState, ActionType } from './type'
 
-export const paintingModeReducer = (
-  mode: PaintingMode = { isActive: false },
+export const paintingReducer = (
+  painting: PaintingState = { isActive: false },
   action: ActionType
 ) => {
   switch (action.type) {
     case 'START_PAINTING':
       return { isActive: true, prevCoord: action.coord }
     case 'PAINTING':
-      return { ...mode, prevCoord: action.coord }
+      return { ...painting, prevCoord: action.coord }
     case 'STOP_PAINTING':
       return { isActive: false }
-    default: return mode
+    default: return painting
   }
 }

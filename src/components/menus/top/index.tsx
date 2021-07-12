@@ -4,7 +4,7 @@ import { setWidth, setColor } from 'actions'
 import { Tool } from 'models/tool'
 
 type TopComponentProps = {
-  tool: Tool,
+  tool: Tool | undefined,
   setWidth: Function,
   setColor: Function
 }
@@ -56,7 +56,7 @@ const TopComponent = ({ tool, setWidth, setColor }: TopComponentProps) => (
 )
 
 const mapStateToProps = (state: State) => {
-  return { tool: state.selectedTool }
+  return { tool: state.tools.find(t => t.selected) }
 }
 
 export const Top = connect(

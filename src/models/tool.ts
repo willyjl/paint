@@ -10,6 +10,7 @@ export interface Tool {
   lineWidth: number | null
   color: string
   draw: DrawFunction
+  selected: boolean
 }
 
 class BasicTool implements Tool {
@@ -17,6 +18,7 @@ class BasicTool implements Tool {
   icon = 'pencil'
   lineWidth = 1
   color = '#000000'
+  selected = false
 
   constructor(title: ToolTitle, icon: string, color: string) {
     this.title = title
