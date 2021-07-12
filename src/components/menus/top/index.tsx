@@ -2,6 +2,9 @@ import { connect } from 'react-redux'
 import { State } from 'reducers/type'
 import { setWidth, setColor } from 'actions'
 import { Tool } from 'models/tool'
+import { ActiveIcon } from './activeIcon'
+import { InputColor } from './inputColor'
+import { InputWidth } from './inputWidth'
 
 type TopComponentProps = {
   tool: Tool | undefined,
@@ -12,35 +15,9 @@ type TopComponentProps = {
 const TopComponent = ({ tool, setWidth, setColor }: TopComponentProps) => (
   <div className="ui top fixed menu">
     <div className="right menu">
-      {tool && (
-        <div className="item active">
-          <i className={`${tool.icon} icon`} />
-        </div>
-      )}
-      {tool?.color && (
-        <div className="item">
-          <input
-            type="color"
-            value={tool.color}
-            onChange={e => setColor(e.target.value)}
-          />
-        </div>
-      )}
-      {tool?.lineWidth && (
-        <div className="item">
-          <input
-            className="slider"
-            type="range"
-            min="1"
-            max="20"
-            value={tool.lineWidth}
-            onChange={e => setWidth(parseInt(e.target.value, 0))}
-          />
-          <div className="ui label">
-            {tool.lineWidth}px
-          </div>
-        </div>
-      )}
+      <ActiveIcon tool={tool} />
+      <InputColor tool={tool} handleChangeColor={color => setColor(color)} />
+      <InputWidth tool={tool} handleChangeWidth={width => setWidth(width)} />
       {false && (
         <>
           <a className="disabled item">
@@ -55,9 +32,7 @@ const TopComponent = ({ tool, setWidth, setColor }: TopComponentProps) => (
   </div>
 )
 
-const mapStateToProps = (state: State) => {
-  return { tool: state.tools.find(t => t.selected) }
-}
+const mapStateToProps = (state: State) => ({ tool: state.tools.find(t => t.selected) } )
 
 export const Top = connect(
   mapStateToProps,
